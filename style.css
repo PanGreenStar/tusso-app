@@ -1,0 +1,61 @@
+body {
+    font-family: Arial;
+    background: #f2f2f2;
+    padding: 20px;
+}
+
+.area {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    width: 200px;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.card.playing {
+    background: #d1ffe0;
+}
+
+button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px;
+}
+
+.menu-toggle {
+    margin-top: 8px;
+    padding: 8px;
+    background: #2d89ef;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-toggle:hover {
+    background: #1b5fc1;
+}
+
+
+.menu {
+    display: none;
+    margin-top: 6px;
+    border-top: 1px solid #ccc;
+    padding-top: 6px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+    font-size: 14px;
+}
