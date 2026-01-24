@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-512.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tusso">
+
+
+
+<meta charset="UTF-8">
+<title>Quản lý quán</title>
+
+<style>
+    :root {
+    --bida: #8e44ad;
+    --game: #007aff;
+    --football: #2ecc71;
+    --volleyball: #ff9f0a;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Segoe UI", sans-serif;
+    background:
+        linear-gradient(180deg, #f7f8fa 0%, #eef0f4 100%);
+    padding: 20px;
+    color: #1c1c1e;
+}
+
+h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+}
+
+
+.area-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    margin: 30px 0 14px;
+    padding-left: 14px;
+    position: relative;
+}
+
+.area-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3px;
+    bottom: 3px;
+    width: 6px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #007aff, #5ac8fa);
+}
+
+
+
+.area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.card {
+    background: rgba(255,255,255,0.75);
+    width: 260px;
+    padding: 18px;
+    border-radius: 26px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.9),
+        0 18px 40px rgba(0,0,0,0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card.playing {
+    transform: translateY(-4px);
+}
+
+
+.area-bida .card.playing {
+    box-shadow:
+        0 0 0 2px var(--bida),
+        0 25px 60px rgba(142,68,173,0.35);
+}
+
+.area-game .card.playing {
+    box-shadow:
+        0 0 0 2px var(--game),
+        0 25px 60px rgba(0,122,255,0.35);
+}
+
+.area-football .card.playing {
+    box-shadow:
+        0 0 0 2px var(--football),
+        0 25px 60px rgba(46,204,113,0.35);
+}
+
+.area-volleyball .card.playing {
+    box-shadow:
+        0 0 0 2px var(--volleyball),
+        0 25px 60px rgba(255,159,10,0.35);
+}
+
+.area-bida .start {
+    background: linear-gradient(135deg, #9b59b6, var(--bida));
+}
+
+.area-game .start {
+    background: linear-gradient(135deg, #5ac8fa, var(--game));
+}
+
+.area-football .start {
+    background: linear-gradient(135deg, #6ee7b7, var(--football));
+}
+
+.area-volleyball .start {
+    background: linear-gradient(135deg, #ffd60a, var(--volleyball));
+}
+
+.area-bida .mode-after.active,
+.area-bida .mode-before.active {
+    background: var(--bida);
+    color: white;
+}
+
+.area-game .mode-after.active,
+.area-game .mode-before.active {
+    background: var(--game);
+    color: white;
+}
+
+.area-football .mode-after.active,
+.area-football .mode-before.active {
+    background: var(--football);
+    color: white;
+}
+
+.area-volleyball .mode-after.active,
+.area-volleyball .mode-before.active {
+    background: var(--volleyball);
+    color: white;
+}
+
+.area-bida .menu-item button {
+    background: var(--bida);
+}
+
+.area-game .menu-item button {
+    background: var(--game);
+}
+
+.area-football .menu-item button {
+    background: var(--football);
+}
+
+.area-volleyball .menu-item button {
+    background: var(--volleyball);
+}
+
+
+
+button {
+    border: none;
+    border-radius: 18px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f2f2f7;
+    color: #1c1c1e;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+
+
+
+
+.mode-after, .mode-before {
+    width: 49%;
+    background: #e5e5ea;
+    color: #1c1c1e;
+}
+
+.mode-after.active,
+.mode-before.active {
+    background: #007aff;
+    color: white;
+}
+
+.mode-before { background:#9b59b6; color:white; width:48%; }
+
+.start {
+    box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+}
+
+
+.end {
+    background: linear-gradient(135deg, #ff453a, #ff3b30);
+    color: white;
+    box-shadow: 0 12px 25px rgba(255,69,58,0.4);
+}
+
+
+
+.prepaid {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+}
+
+.menu-toggle {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 16px;
+    background: #f2f2f7;
+    color: #007aff;
+    font-weight: 600;
+}
+
+.menu-toggle:active {
+    background: #e5e5ea;
+}
+
+
+.menu {
+    background: rgba(255,255,255,0.92);
+    border-radius: 22px;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.9),
+        0 10px 25px rgba(0,0,0,0.06);
+
+    max-height: 0;          /* 🔥 QUAN TRỌNG */
+    overflow: hidden;       /* 🔥 QUAN TRỌNG */
+    padding: 0;             /* 🔥 QUAN TRỌNG */
+    transition: max-height 0.35s ease, padding 0.25s ease;
+}
+
+
+
+.menu.show {
+    max-height: 320px;
+    padding: 6px 0;       /* ← chỉ padding khi mở */
+    overflow-y: auto;
+}
+
+
+.menu-name {
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    word-break: break-word;
+}
+
+
+.menu-item span {
+    transition: transform 0.12s ease;
+}
+
+.menu-item button:disabled {
+    opacity: 0.4;
+}
+
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 14px;
+    border-bottom: 1px solid #e5e5ea;
+    font-size: 15px;
+}
+
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item button {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #007aff;
+    color: white;
+
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px; /* QUAN TRỌNG */
+
+    padding: 0;
+}
+
+
+
+.menu-item div span {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+    color: #1c1c1e;
+}
+
+
+
+.menu-item button {
+    background: #007aff;
+    font-weight: bold;
+}
+
+
+.info {
+    background: rgba(255,255,255,0.85);
+    padding: 12px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 12px;
+}
+
+
+
+.total {
+    background: linear-gradient(135deg, #34c759, #30d158);
+    color: white;
+    padding: 18px 20px;
+    border-radius: 24px;
+    font-size: 28px;
+    font-weight: 700;
+    box-shadow: 0 20px 40px rgba(52,199,89,0.35);
+    margin-bottom: 30px;
+}
+
+#revenueModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 30px;
+    padding: 22px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.28);
+}
+
+
+.modal-box h2 {
+    margin-bottom: 12px;
+}
+
+.modal-box table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.modal-box th, .modal-box td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.modal-box th {
+    background: #f2f2f7;
+    font-weight: 600;
+}
+
+.modal-box button {
+    margin-top: 16px;
+    width: 100%;
+    background: #007aff;
+    color: white;
+}
+
+.table-total {
+    margin: 6px 0 10px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #1c1c1e;
+}
+
+#lockScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #e8f0ff, #fdfefe);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-card {
+    background: #ffffff;
+    padding: 35px;
+    width: 340px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.lock-card h1 {
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.lock-card p {
+    color: #666;
+    margin-bottom: 22px;
+    font-size: 15px;
+}
+
+.lock-card input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+.lock-card input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.lock-card button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #4CAF50;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lock-card button:hover {
+    background: #43a047;
+}
+
+#errorText {
+    margin-top: 10px;
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>HỆ THỐNG QUẢN LÝ QUÁN</h1>
+
+<div class="total" onclick="showTodayRevenue()">
+    Doanh thu hôm nay: <span id="dailyTotal">0 đ</span>
+</div>
+
+<div class="area-title">🏐 Sân bóng chuyền</div>
+<div class="area area-volleyball" id="volleyballArea"></div>
+
+<div class="area-title">🎮 Máy game</div>
+<div class="area area-game" id="gameArea"></div>
+
+<div class="area-title">⚽ Sân 5 người</div>
+<div class="area area-football" id="football5Area"></div>
+
+<div class="area-title">⚽ Sân 7 người</div>
+<div class="area area-football" id="football7Area"></div>
+
+<div class="area-title">🎱 Khu Bida</div>
+<div class="area area-bida" id="bidaArea"></div>
+
+
+<div id="revenueModal" style="display:none">
+    <div class="modal-box">
+        <h2 id="modalTitle"></h2>
+        <div id="modalContent"></div>
+        <button onclick="closeRevenue()">Đóng</button>
+    </div>
+</div>
+
+<div id="lockScreen">
+    <div class="lock-card">
+        <h1>🔒 QUẢN LÝ QUÁN TUYẾT NGA </h1>
+        <p>Nhập mật khẩu để tiếp tục</p>
+
+        <input type="password" id="passwordInput" placeholder="Mật khẩu">
+        <button onclick="unlock()">Mở khóa</button>
+
+        <div id="errorText"></div>
+    </div>
+</div>
+
+<div id="appContent" style="display:none;">
+    <!-- APP CỦA TÚ MẬP -->
+</div>
+
+
+
+<button onclick="showDetailedRevenue('game','DOANH THU MÁY GAME')">📊 Máy game</button>
+<button onclick="showDetailedRevenue('football','DOANH THU SÂN BÓNG ĐÁ')">📊 Sân bóng đá</button>
+<button onclick="showDetailedRevenue('volleyball','DOANH THU BÓNG CHUYỀN')">📊 Bóng chuyền</button>
+<button onclick="showDetailedRevenue('bida','DOANH THU KHU BIDA')">📊 Bida</button>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
